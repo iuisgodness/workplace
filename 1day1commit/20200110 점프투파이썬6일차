@@ -1,0 +1,159 @@
+제어문 - if문
+if문은 프로그래밍에서 조건을 판단하여 해당 조건에 맞는 상황을 수행하는 데 쓰는 것
+ex)
+>>> money = True #money에 True를 입력했으므로 money는 참이다. 따라서 if문은 다음 문장이 수행되어 'taxi'가 출력됨.
+>>> if money:
+...     print("taxi")
+... else:
+...     print("walk")
+...
+taxi
+
+if문의 기본 구조
+if 조건문:
+  수행할 문장1 #들여쓰기 필수
+  수행할 문장2 #들여쓰기 필수
+  ......
+else:
+  수행할 문장A #들여쓰기 필수
+  수행할 문장B #들여쓰기 필수
+  .....
+
+들여쓰기
+if문을 만들 때에는 if 조건문: 바로 아래 문장부터 if문에 속하는 모든 문장에 들여쓰기를 해주어야 한다.
+들여쓰기는 Spacebar 4번, Tab방법이 있는데 파이썬 커뮤니티에서는 Spacebar 4번 권장
+
+if 조건문에서 '조건문'은 참과 거짓을 판단하는 문장을 말한다. 위 ex에서 money = True 이기 때문에 조건이 참이 되어 if문 다음 문장을 수행
+
+비교 연산자(많은 종류가 있지만 나한테 생소한 것만)
+1. x == y        x와 y가 같다
+2. x != y        x와 y가 같지 않다
+
+and, or, not
+1. x or y        x와 y 둘 중에 하나만 참이면 참이다
+2. x and y       x와 y 모두 참이어야 참이다
+3. not x         x가 거짓이면 참이다
+ex) 돈이 3000원 이상 있거나 카드가 있다면 택시를 타고 그렇지 않으면 걸어 가라.
+>>> money = 2000
+>>> card = True
+>>> if money >= 3000 or card: #money는 2000원이라 거짓이지만 card는 True로 정의하였기 때문에 참이다. 둘중 하나만 참이어도 or문은 참이니 참.
+...     print("taxi")
+... else:
+...     print("walk")
+...
+taxi
+
+x in s, x not in s
+x in 리스트, x not in 리스트
+x in 튜플, x not in 튜플
+x in 문자열, x not in 문자열
+ex)
+1 in [1, 2, 3]
+True
+'j' not in 'python'
+True
+
+ex) 주머니에 카드가 없다면 걸어가고, 있다면 버스를 타고 가라'는 문장을 조건문으로 만들어 보자.
+>>> pocket = ['paper', 'cellphone', 'money'] #주머니 안에 종이, 휴대전화, 돈이 있다.
+>>> if 'card' not in pocket:
+...     print("walk")
+... else:
+...     print("bus")
+...
+walk
+
+조건문에서 아무 일도 하지 않게 설정하고 싶다면? pass
+
+다양한 조건을 판단하고 싶다 -> elif
+if 조건문:
+  수행할 문장1-1
+  수행할 문장1-2
+  ...
+elif 조건문2:
+  수행할 문장2-1
+  수행할 문장2=2
+  ...
+
+else:
+  수행할 문장A
+  수행할 문장B
+
+if문을 한 줄로 작성할 수 있다.
+ex)
+if 'money' in pocket: pass
+else: print("card")
+
+조건부 표현식
+<조건문이 참인 경우> <if 조건문> <else> <조건문이 거짓인 경우>
+
+제어문 - while문
+while문 기본 구조
+while 조건문:
+  수행할 문장1
+  수행할 문장2
+  수행할 문장3
+  ...
+  
+ex) '열 번 찍어 안 넘어가는 나무 없다.' 속담을 파이썬 프로그램으로
+>>> treehit = 0
+>>> while treehit < 10:
+...     treehit = treehit + 1 #treehit 값을 1만큼 증가시킨다. treehit += 1과 같다.
+...     print("나무를 %d번 찍었습니다." %treehit)
+...     if treehit == 10:
+...             print("나무 넘어갑니다.")
+...
+나무를 1번 찍었습니다.
+나무를 2번 찍었습니다.
+나무를 3번 찍었습니다.
+나무를 4번 찍었습니다.
+나무를 5번 찍었습니다.
+나무를 6번 찍었습니다.
+나무를 7번 찍었습니다.
+나무를 8번 찍었습니다.
+나무를 9번 찍었습니다.
+나무를 10번 찍었습니다.
+나무 넘어갑니다.
+
+while문 강제로 빠져나가기 -> break
+ex)커피자판기
+# coffee.py
+coffee = 10
+while True:
+    money = int(input("돈을 넣어주세요: ")) #input 사용자의 숫자 입력을 받아들이는 것.. int는 정수형태만 가능하다는 것 같다. 뒤에서 자세히 배움 
+    if money == 300:
+        print("커피를 줍니다.")
+        coffee = coffee - 1
+    elif money > 300:
+        print("거스름돈 %d를 주고 커피를 줍니다." % (money - 300))
+        coffee = coffee - 1
+    else:
+        print("돈을 다시 돌려주고 커피를 주지 않습니다.")
+        print("남은 커피의 양은 %d개 입니다." % coffee)
+    if coffee == 0:
+        print("커피가 다 떨어졌습니다. 판매를 중지합니다.")
+        break #강제로 빠져나감
+        
+while문의 맨 처음으로 돌아가기 -> continue
+continue = while문의 맨 처음으로 돌아가게 하는 명령어
+ex) 1부터 10까지 숫자 중에서 3의 배수를 뺀 나머지 값을 출력해 보자.
+>>> a = 0
+>>> while a < 10:
+...     a = a + 1
+...     if a % 3 == 0: continue #continue를 사용하여 while문의 맨 처음으로 돌아가게 한다. a를 3으로 나누었을 때 나머지가 0인 것들을
+...     print(a)
+...
+1
+2
+4
+5
+7
+8
+10
+
+무한 루프 - 무한히 반복한다.(while문으로 사용)
+while True:
+  수행할 문장1
+  수행할 문장2
+  ...
+  
+만약 무한 루프를 빠져나갈려면 Ctrl + c를 누르면 된다.
