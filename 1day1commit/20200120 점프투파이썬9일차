@@ -1,0 +1,221 @@
+4장 프로그램의 입력과 출력은 어떻게 해야 할까?
+4-1 함수
+함수를 사용하는 이유
+1. 반복되는 부분이 있을 경우 그 부분을 한 뭉치로 묶어서 어떤 입력을 주었을 때 어떤 결괏값으로 돌려준다라는 식으로 표현
+2. 자신이 만든 포르그램을 함수화하면 프로그램의 흐름을 일목 요연하게 볼 수 있기 때문
+
+파이썬 함수의 구조
+def 함수 이름(매개변수):
+  수행할 문장1
+  수행할 문장2
+  ...
+
+def - 함수를 만들 때 사용하는 예약어
+매개변수 - 이 함수에 입력으로 전달되는 값을 받는 변수
+
+def add(a, b):
+  return a + b
+-> 이 함수의 이름은 add이고 입력으로 2개의 값을 받으며 결괏값은 2개의 입력값을 더한 값이다.
+
+a = 3
+b = 4
+c = add(a, b) # add(3, 4)의 반환 값을 c에 대입
+print(c)
+7
+
+3, 4는 인수 a, b는 매개변수이다.
+인수 - 함수를 호출할 때 전달하는 입력값
+
+함수의 종류
+1. 일반적인 함수(입력값, 결괏값)
+def add(a, b):
+  result = a + b
+  return result # a + b의 결괏값 반환
+
+a = add(3, 4) # 결괏값을 받을 변수 = 함수이름(입력인수 1, 입력인수 2,...)
+print(a)
+7
+
+2. 입렷값이 없는 함수
+def say():
+  return 'Hi'
+  
+a = say() # 결괏값을 받을 변수 = 함수이름()
+print(a)
+Hi
+
+3. 결괏값이 없는 함수
+def add(a, b)
+  print("%d, %d의 합은 %d입니다." % (a, b, a + b))
+  
+add(3, 4) # 함수이름(입력인수 1, 입력인수 2, ...)
+3, 4의 합은 7입니다.
+
+4. 입력값도 결괏값도 없는 함수
+def say():
+  print('Hi')
+
+say() # 함수이름()
+Hi
+
+매개변수 지정하여 호출하기
+def add(a, b):
+  return a + b
+
+result = add(a=3, b=7)
+print(result)
+10
+
+입력값이 몇 개가 될지 모를 때는? -> *사용
+def 함수이름(*매개변수)
+  수행할 문장
+  ...
+ 
+def add_many(*args):
+  result = 0
+  for i in args:
+    result = result + i # args에 입력받은 모든 값을 더한다
+  return result
+ 
+result = add_many(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+print(result)
+55
+
+>>> def add_mul(choice, *args):
+...     if choice == 'add':
+...             result = 0
+...             for i in args:
+...                     result = result + i
+...     elif choice == 'mul'
+  File "<stdin>", line 6
+    elif choice == 'mul'
+                       ^
+SyntaxError: invalid syntax
+>>> def add_mul(choice, *args):
+...     if choice == 'add':
+...             result = 0
+...             for i in args:
+...                     result = result + i
+...     elif choice == 'mul':
+...             result = 1
+...             for i in args:
+...                     result = result * i
+...     return result
+...
+>>> rsult = add_mul('add', 1, 2, 3, 4, 5)
+>>> print(rsult)
+15
+>>> result = add_mul('mul', 1, 2, 3, 4, 5)
+>>> print(result)
+120
+
+키워드 파라미터
+매개변수 이름 앞에 **을 붙이면 매개변수가 딕셔너리가 되고 key = value 형태로 저장된다.
+>>> def print_kwargs(**kwargs):
+...     print(kwargs)
+...
+>>> print_kwargs(a = 1)
+{'a': 1}
+>>> print_kwargs(name = 'foo', age = 3)
+{'name': 'foo', 'age': 3}
+
+함수의 결괏값은 언제나 하나이다.
+def add_and_mul(a, b):
+  return a+b, a*b 
+  
+result = add_and_mul(3, 4)
+print(result)
+(7, 12)
+
+오류가 날 거 같지만 아니다. 함수의 결괏값은 하나라는데 있기 때문에 (a+b, a*b)의 튜플 형태로 돌려준다.
+단 return
+   return 이런식으로 두번이상 사용하면 맨 위의 return 값만 되돌려준다.
+
+return은 특별한 상황일 때 함수를 빠져나가고 싶을 때도 사용 가능하다
+ex)
+>>> def say_nick(nick):
+...     if nick == "바보":
+...             return # 바보 들으면 바로 함수 나감
+...     print("나의 별명은 %s입니다." % nick)
+...
+>>> say_nick('야호')
+나의 별명은 야호입니다.
+>>> say_nick('바보')
+
+매개변수의 초깃값을 미리 설정하기
+# myself.py
+def say_myself(name, old, man=True): # man=True로 미리 설정했다.
+    print("나의 이름은 %s입니다." % name)
+    print("나이는 %d살입니다." % old)
+    if man:
+        print("남자입니다.")
+    else:
+        print("여자입니다.")
+
+하지만 미리 설정하는 매개변수는 맨 뒤에 와야한다!!
+
+함수 안에서 선언한 변수의 효력 범위(함수 안에서 선언한 변수는 함수 안에서만 사용 가능)
+# vartest.py
+a = 1
+def vartest(a):
+    a = a + 1
+    
+vartest(a)
+print(a)
+
+값은 2가 나올거 같지만 1이 나옴. 왜냐하면 함수 안에서 새로 만든 매개변수는 함수 안에서만 사용하는 함수만의 변수이기 때문이다.
+# vartest_error.py
+def vartest(a):
+    a = a + 1
+
+>>> vartest(3)
+>>> print(a)
+Traceback (most recent call last):
+  File "<pyshell#6>", line 1, in <module>
+    print(a)
+NameError: name 'a' is not defined
+-> vartest안에서는 3을 받아 4가 되지만 print(a)에서 입력받아야 하는 a 변수를 어디에서도 찾을 수가 없기 때문이다.
+
+함수 안에서 함수 밖의 변수를 변경하는 방법
+1. return 사용하기
+# vartest_return.py
+a = 1
+def vartest(a):
+    a = a + 1
+    return a
+    
+>>> a = vartest(a) # a가 vartest함수의 결괏값으로 바뀐다. 여기서도 vartest함수 안의 a 매개변수는 함수 밖의 a와는 다른 것이다.
+>>> print(a)
+2
+
+# vartest_global.py
+a = 1
+def vartest():
+    global a # 함수 안에서 함수 밖의 a변수를 직접 사용하겠다는 뜻
+    a = a + 1
+
+>>> vartest()
+>>> print(a)
+2
+-> 하지만 global함수는 사용하지 않는 것이 좋다. 왜냐하면 함수는 독립적으로 존재하는게 좋기 때문이다.
+
+lambda
+함수를 생성할 때 사용하는 예약어로 def와 동일한 역할을 한다. 보통 함수를 한줄로 간결하게 만들 때 사용한다.
+
+lambda 매개변수1, 매개변수2,...: 매개변수를 사용한 표현식
+
+ex)
+>>> add = lambda a, b: a+b
+>>> result = add(3, 4)
+>>> print(result)
+7
+-> lambda 예약어로 만든 함수는 return 명령어가 없어도 결괏값을 돌려줌
+
+=
+def add(a, b):
+  return a + b
+  
+result = add(3, 4)
+print(result)
+7
+
