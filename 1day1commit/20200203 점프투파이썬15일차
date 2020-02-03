@@ -1,0 +1,99 @@
+예외 처리
+- 오류를 무시하고 싶을때 사용
+
+보통 오류들
+FileNotFoundError - 없는 파일을 열려고 시도할때 발생
+ZeroDivisionError - 0으로 나눌때 발생
+IndexError - 리스트에 없는 값이 있을때 발생
+
+오류 예외 처리 기법
+try, except문
+try:
+  ...
+except [발생 오류[as 오류 메시지 변수]]:
+  ...
+1. try,except만 쓰는 방법
+try:
+  ...
+except:
+  ...
+2. 발생 오류만 포함한 except문
+try:
+  ...
+except 발생오류:
+  ...
+3. 발생 오류와 오류 메시지 변수까지 포함한 except문
+try:
+  ...
+except 발생 오류 as 오류 메시지 변수:
+  ...
+
+
+try ... finally
+- try문 수행 도중 예외 발생 여부에 상관없이 항상 수행시키려면 finally 사용
+
+여러개의 오류 처리하기
+1.
+try:
+  ...
+except 발생 오류 1:
+  ...
+except 발생 오류 2:
+  ...
+2.
+try:
+  ...
+except (발생오류 1, 발생오류 2) as 변수
+
+오류 회피하기
+- 특정 오류가 발생할 경우 그냥 통과시켜야 할때 사용
+try:
+  ...
+except ...:
+  pass
+  
+오류 일부러 발생시키기
+- raise 명령어 사용
+
+
+예외 만들기
+ex)
+>>> class MyError(Exception):
+...     pass
+...
+>>> def say_nick(nick):
+...     if nick == 'stupid':
+...             raise MyError()
+...     print(nick)
+...
+>>> say_nick("천사")
+천사
+>>> say_nick("stupid")
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "<stdin>", line 3, in say_nick
+__main__.MyError
+
+
+ex) 예외 처리 기법 사용
+>>> try:
+...     say_nick("천사")
+...     say_nick("바보")
+... except MyError:
+...     print("허용되지 않는 별명입니다.")
+...
+천사
+바보
+
+만약 오류 메시지를 사용하고 싶다면 다음처럼 예외 처리를 하면 된다.
+ex)
+>>> try:
+...     say_nick("천사")         입니다.")
+...     say_nick("바보")
+... except MyError as e:
+...     print(e)
+...
+천사
+바보
+-> 오류 메시지가 출력아 안됨
+오류 메시지를 보이게 하려면? __str__메서드 구현해야함
