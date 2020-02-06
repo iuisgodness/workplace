@@ -1,0 +1,166 @@
+외장함수 1
+sys
+- 파이썬 인터프리터가 제공하는 변수와 함수를 직접 제어할 수 있게 해주는 모듈
+
+#argv_test.py
+import sys
+print(sys.argv)
+
+C:\doit\mymod>python argb_test.py you need python
+['argb_test.py', 'you', 'need', 'python']
+
+강제로 스크립트 종료하기
+1. sys.exit()
+2. Ctrl + Z
+3. Ctrl + D
+
+자신이 만든 모듈 불러와 사용하기 
+- sys.path # 파이썬 모듈들이 저장되어 있는 위치를 나타냄
+
+>>> import sys
+>>> sys.path
+['', 'C:\\Users\\army\\AppData\\Loca.....] # ''는 현재 디렉터리를 말함
+
+pickle
+- 객체의 형태를 그대로 유지하면서 파일에 저장하고 불러올 수 있게 하는 모듈이다.
+
+>>> import pickle
+>>> f = open("test.txt", 'wb')
+>>> data = {1: 'python', 2: 'you need'}
+>>> pickle.dump(data, f) # pickle 모듈의 dump함수를 사용하여 딕셔너리 객체인 data를 그대로 파일에 저장함
+>>> f.close()
+
+>>> f = open("test.txt", 'rb')
+>>> data = pickle.load(f) # pickle.dump로 저장한 파일을 pickle.load를 사용해서 원래 있던 딕셔너리 객체상태 그대로 불러온다.
+>>> print(data)
+{1: 'python', 2: 'you need'}
+
+OS
+- 환경 변수나 디렉터리, 파일 등의 OS 자원을 제어할 수 있게 해주는 모듈
+내 시스템의 환경 변수 값을 알고 싶을 때 
+- os.environ
+
+>>> import os
+>>> os.environ
+environ({'ALLUSERSPROFILE': 'C:\\ProgramData', 'APPDA...})
+- 내 시스템 정보이다. os.environ은 환경 변수에 대한 정보를 딕셔너리 객체로 돌려줌
+
+디렉터리 위치 변경하기
+- os.chdir
+현재 디렉터리 위치를 변경
+>>> os.chdir("C:\WINDOWS")
+
+디렉터리 위치 돌려받기
+-os.getcwd
+현재 자신의 디렉터리 위치를 돌려줌
+>>> os.getcwd()
+'C:\\WINDOWS'
+
+시스템 명령어 호출하기
+-os.system
+시스템 자체의 프로그램이나 기타 명령어를 파이썬에서 호출할 수도 있다.
+>>> os.system("dir")
+
+실행한 시스템 명렁어의 결괏값 돌려받기
+- os.popen
+os.popen은 시스템 명령어를 실행한 결괏값을 읽기 모드 형태의 파일 객체로 돌려준다.
+
+>>> f = os.popen("dir")
+
+읽어 들인 파일 객체의 내용을 보기 위해서는?
+>>> print(f.read())
+
+기타 유용한 os 관련 함수
+os.mkdir(디렉터리) - 디렉터리 생성
+os.rmdir(디렉터리) - 디렉터리 삭제(단, 디렉터리가 비어 있어야 삭제 가능)
+os.unlink(파일 이름) - 파일을 지운다.
+os.rename(src, dst) - src라는 이름의 파일을 dst라는 이름으로 바꾼다.
+
+shutil
+- 파일을 복사해 주는 모듈이다.
+
+>>> import shutil
+>>> shutil.copy("src.txt", "dst.txt") # src라는 이름의 파일을 dst로 복사함, dst가 디렉터리 이름이면 src는 파일 이름으로 dst 디렉터리에 복사하고 동일한 파일 이름이 있을 경우 덮어씀
+
+glob
+- 파일을 읽고 쓰는 기능이 있는 프로그램을 만들다 보면 특정 디렉터리에 있는 파일 이름 모두를 알아야 할 때가 있다. 이때 glob 씀
+
+디렉터리에 있는 파일들을 리스트로 만들기
+- glob(pathname)
+glob 모듈은 디렉터리 안의 파일들을 읽어서 돌려준다.
+
+ex)
+>>> import glob
+>>> glob.glob("c:\doit\mark*")
+['c:\\doit\\marks1.py', 'c:\\doit\\marks2.py', 'c:\\doit\\marks3.py']
+
+tempfile
+- 파일을 임시로 만들어서 사용할 때 유용한 모듈
+
+>>> import tempfile
+>>> filename = tempfile.mktemp() # tempfile.mktemp()는 중복되지 않는 임시 파일의 이름을 무작위로 만들어서 돌려줌
+>>> filename
+'C:\\Users\\army\\AppData\\Local\\Temp\\tmp7fe4izqi'
+
+>>> import tempfile
+>>> f = tempfile.TemporaryFile() # tempfile.TemporaryFile()은 임시 저장공간으로 사용할 파일 객체를 돌려준다. 
+>>> f.close()
+
+time
+- 시간과 관련된 모듈
+
+time.time
+- 협정 세계 표준시를 사용하여 현재 시간을 실수 형태로 돌려주는 함수이다. 1970년 1월 1일 0시 0분 0초를 기준으로 지난시간
+
+>>> time.time()
+1580960511.5364773
+
+time.localtime
+- time.time()이 돌려준 실수 값을 사용해서 연도, 월, 일, 시, 분, 초, ...의 형태로 바꾸어 주는 함수
+
+>>> time.localtime(time.time())
+time.struct_time(tm_year=2020, tm_mon=2, tm_mday=6, tm_hour=12, tm_min=44, tm_sec=6, tm_wday=3, tm_yday=37, tm_isdst=0)
+
+time.asctime
+- time.localtime에 의해서 반환된 튜플 형태의 값을 인수로 받아서 날짜와 시간을 알아보기 쉬운 형태로 돌려주는 함수이다.
+
+>>> time.asctime(time.localtime(time.time()))
+'Thu Feb  6 12:46:02 2020'
+
+time.ctime
+- time.asctime(time.localtime(time.time()))은 time.ctime()을 사용해 간편하게 표시할 수 있다.
+
+>>> time.ctime()
+'Thu Feb  6 12:46:27 2020'
+
+time.strftime
+254p에 포맷 코드 제공
+
+ex)
+>>> time.strftime('%x', time.localtime(time.time())) # 현재 설정된 지역에 기반한 날짜 출력
+'02/06/20'
+
+>>> time.strftime('%c', time.localtime(time.time())) # 날짜와 시간을 출력함
+'Thu Feb  6 13:01:44 2020'
+
+time.sleep
+- 주로 루프 안에서 많이 사용한다.
+
+# sleep1.py
+import time
+for i in range(10):
+    print(i)
+    time.sleep(1) # 1이 간격을 뜻함, 1이면 1초, 0.5면 0.5초임
+    
+    ========================= RESTART: C:/doit/sleep1.py =========================
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+
