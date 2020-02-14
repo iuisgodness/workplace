@@ -1,0 +1,51 @@
+프로그램 만들기
+* 프로그램을 만들려면 가장 먼저 '입력'과 '출력'을 생각하라
+
+만약 구구단중 2단을 만들려면?
+1. 함수이름은? # GuGu로 짖자
+2. 입력받는 값은? # 2
+3. 출력하는 값은? # 2단(2, 4, 6, 8, 10, 12, 14, 16, 18)
+4. 결과는 어떤 형태로 저장하지? # 연속된 자료형이니까 리스트!
+
+시도하기
+1. 출력 생각하기
+GuGu라는 함수에 2를 입력값으로 주면 result라는 변수에 결괏값을 넣어라
+-> result = GuGu(2)
+
+2. 진짜 프로그램 짜보기
+GuGu 함수 생성
+def GuGu(n):
+
+3. 결괏값을 담을 리스트 생성하기
+def GuGu(n):
+  result = []
+  
+4. result에 2, 4, 6, ...을 어떻게 넣어야 할지 생각해 보기
+무식한 방법
+ex)
+def GuGu(n):
+    result = []
+    result.append(n*1) # result 리스트에 요소 추가하는 append 내장함수
+    result.append(n*2)
+    result.append(n*3)
+    result.append(n*4)
+    result.append(n*5)
+    result.append(n*6)
+    result.append(n*7)
+    result.append(n*8)
+    result.append(n*9)
+    return result
+print(GuGu(2))
+
+5. 하지만 위 함수는 반복이 너무 많다. -> 똑같은 일을 반복할때는 반복문 사용 -> for 반복문 사용
+ex)
+def GuGu(n):
+    result = [] # 결괏값을 저장할 리스트
+    i = 1
+    while i < 10:
+        result.append(n * i)
+        i = i + 1
+    return result
+print(GuGu(2))
+
+조금 커밋 ㅈㅅ
