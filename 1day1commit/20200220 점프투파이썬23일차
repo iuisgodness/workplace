@@ -1,0 +1,130 @@
+6-5 탭을 4개의 공백으로 바꾸기
+필요한 기능은? 문서 파일 읽어 들이기, 문자열 변경하기
+입력받는 값은? 탭을 포함한 문서 파일
+출력하는 값은? 탭이 공백으로 수정된 문서 파일
+
+python tabto4.py src dst -> 이런식으로 수행될거임
+
+1. sys.argv를 사용하여 입력값을 확인하도록 만든 코드
+# C:\doit\tabto4.py
+import sys
+
+src = sys.argv[1]
+
+dst = sys.argv[2]
+
+print(src)
+print(dst)
+
+2. 이제 탭 문자를 포함한 a.txt파일을 읽어서 탭을 공백 4개로 변환할 수 있도록 코드 변경
+# C:\doit\tabto4.py
+import sys
+
+src = sys.argv[1]
+
+dst = sys.argv[2]
+
+f = open(src)
+tab_content = f.read()
+f.close()
+
+space_content = tab_content.replace("\t", " "*4)
+
+print(space_content)
+-> 위 코드는 src에 해당되는 입력 파일을 읽어서 그 내용을 tab_content라는 변수에 저장한 후 문자열의 replace함수를 사용하여 탭을 4개의 공백으로
+변경하는 코드이다.
+
+3. 이제 변경된 내용을 b.txt파일에 저장할 수 있도록 다음과 같이 프로그램 변경
+# C:\doit\tabto4.py
+import sys
+
+src = sys.argv[1]
+
+dst = sys.argv[2]
+
+f = open(src)
+tab_content = f.read()
+f.close()
+
+space_content = tab_content.replace("\t", " "*4)
+
+f = open(dst, 'w')
+f.write(space_content)
+f.close()
+-> 탭이 공백으로 변경된 space_content를 출력 파일인 dst에 쓰도록 코드를 수정하였다.
+
+6-6 하위 디렉터리 검색하기
+파이썬 파일만 출력해주는 프로그램 만들기
+
+1. 디렉터리에 파일을 검색할 수 있도록 소스 변경
+# C:\doit\sub_dir_search.py
+import os
+
+def search(dirname):
+    try: 
+        filenames = os.listdir(dirname)
+        for filename in filenames:
+            full_filename = os.path.join(dirname, filename
+            print(full_filename)
+    
+search("C:\")
+-> os.listdir을 사용하면 해당 디렉터리에 있는 파일들의 리스트를 구할 수 있음.
+여기에서 구하는 파일 리스트는 파일 이름만 포함되어 있으므로 경로를 포함한 파일 이름을 구하기 위해서는 입력으로 받은 dirname을 앞에 덧붙여 주어야함
+os모듈에는 디렉터리와 파일 이름을 이어주는 os.path.join함수가 있으므로 이 함수를 사용하면 디렉터리를 포함한 전체 경로를 쉽게 구할수 있음
+
+2. 이제 C:\디렉터리에 있는 파일들 중 확장자가 .py인 파일만을 출력하도록 코드를 변경해 보자.
+# C:\doit\sub_dir_search.py
+import os
+
+def search(dirname):
+    try: 
+        filenames = os.listdir(dirname)
+        for filename in filenames:
+            full_filename = os.path.join(dirname, filename)
+           ext = os.payh.splitext(full_filename)[-1]
+            if ext == '.py':    
+                print(full_filename)
+      
+search("C:\")
+-> 파일 이름에서 확장자만 추출하기 위해 os모듈의 os.path.splitext함수를 사용하였다.
+os.path.splitext는 파일 이름을 확장자를 기준으로 두 부분으로 나누어 준다. 따라서 os.path.splitext(full_filename)[-1]은 해당 파일의 확장자 
+이름이 된다. 위 코드는 이름이 .py인 경우만을 출력하도록 작성함. C:\디렉터리에 파이썬 파일이 없다면 아무것도 출력X
+
+3. 우리가 원하는 것은 C:\디렉터리 바로 밑에 있는 파일뿐만 아니라 그 하위 디렉터리를 포함한 모든 파이썬 파일을 검색하는 것이다.
+하위 디렉터리도 검색이 가능하도록 다음과 같이 코드를 변경해야 한다.
+
+# C:\doit\sub_dir_search.py
+import os
+
+def search(dirname):
+    try: 
+        filenames = os.listdir(dirname)
+        for filename in filenames:
+            full_filename = os.path.join(dirname, filename)
+        if os.path.isdir(full_filename):
+            search(full_filename)
+        else:
+            ext = os.payh.splitext(full_filename)[-1]
+            if ext == '.py':    
+                print(full_filename)
+    except PermissionError:
+        pass
+
+    
+search("C:\")
+->try ... except PermissionErro 함수 전체를 감싼 이유는 os.listdirㅇㄹ 수행할 때 권한이 없는 디렉터리에 접근하더라도 프로그램이 오류로 종료x
+그냥 수행하도록 하기 위함
+full_filename이 디렉터리인지 파일인지 구별하기 위하여 os.path.isdir함수를 사용하였고 디렉터리 일 경우 해당 경로를 입력받아 다시 search함수를 호출함
+해당 디렉터리의 파일이 디렉터리일 경우 다시 search함수를 호출해 나가면 재귀호출이됨
+
+위 프로그램을 간단하게 하는 os.walk
+import os
+
+for (path, dir, files) in os.walk("C:\"):
+    for filename in files:
+        ext = os.path.splitext(filename)[-1]
+        if ext == '.py':
+            print("%s\%s" % (path, filename))
+-> 디렉터리와 파일을 검색하는 일반적인 경우라면 os.walk를 사용하는 것을 추천
+
+
